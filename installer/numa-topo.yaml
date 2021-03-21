@@ -1,0 +1,150 @@
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.4
+  creationTimestamp: null
+  name: numatopos.nodeinfo.volcano.sh
+spec:
+  group: nodeinfo.volcano.sh
+  names:
+    kind: Numatopo
+    listKind: NumatopoList
+    plural: numatopos
+    singular: numatopo
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      description: Numatopo is the Schema for the numatopos API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: Specification of the numa information of the worker node
+          properties:
+            numares:
+              additionalProperties:
+                additionalProperties:
+                  properties:
+                    allocatable:
+                      type: integer
+                    capacity:
+                      type: integer
+                  type: object
+                description: Key is numa ID
+                type: object
+              description: Specifies the numa info for the resource Key is resource
+                name
+              type: object
+            policies:
+              additionalProperties:
+                type: string
+              description: Specifies the policy of the manager
+              type: object
+          type: object
+      type: object
+  version: v1alpha1
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: numares-role
+rules:
+  - apiGroups: ["apiextensions.k8s.io"]
+    resources: ["customresourcedefinitions"]
+    verbs: ["create", "get", "list", "watch", "delete"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["list", "watch"]
+  - apiGroups: [""]
+    resources: ["persistentvolumes"]
+    verbs: ["list", "watch"]
+  - apiGroups: ["nodeinfo.volcano.sh"]
+    resources: ["numatopos"]
+    verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: numares-role-bind
+subjects:
+  - kind: ServiceAccount
+    name: numares-account
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: numares-role
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: numares-account
+  namespace: default
+
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: numares-daemonset
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      name: resource-topology
+  template:
+    metadata:
+      labels:
+        name: resource-topology
+    spec:
+      serviceAccountName: numares-account
+      containers:
+        - name: resource-topology-exporter-container
+          image: volcanosh/numatopo:latest
+          imagePullPolicy: IfNotPresent
+          args:
+            - --logtostderr
+            - --kubelet-conf=/host/kubeletconf/config.yaml
+            - --cpu-manager-state=/host/kubelet/cpu_manager_state
+            - --node-path=/host/node
+            - -v=4
+            - 2>&1
+          env:
+            - name: MY_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          volumeMounts:
+            - name: node-path
+              mountPath: "/host/node"
+            - name: kubelet-path
+              mountPath: "/host/kubelet"
+            - name: kubelet-config-path
+              mountPath: "/host/kubeletconf"
+      volumes:
+        - name: node-path
+          hostPath:
+            path: "/sys/devices/system/node"
+        - name: kubelet-path
+          hostPath:
+            path: "/var/lib/kubelet"
+        - name: kubelet-config-path
+          hostPath:
+            path: "/var/lib/kubelet"
