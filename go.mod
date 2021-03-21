@@ -3,18 +3,38 @@ module github.com/huone1/cputopo
 go 1.15
 
 require (
-	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/evanphx/json-patch v4.9.0+incompatible // indirect
+	github.com/go-logr/logr v0.3.0 // indirect
+	github.com/go-logr/zapr v0.2.0 // indirect
+	github.com/golang/protobuf v1.4.3 // indirect
+	github.com/googleapis/gnostic v0.4.0 // indirect
+	github.com/hashicorp/golang-lru v0.5.4 // indirect
+	github.com/imdario/mergo v0.3.10 // indirect
+	github.com/kr/pretty v0.2.0 // indirect
+	github.com/onsi/ginkgo v1.14.1 // indirect
+	github.com/onsi/gomega v1.10.2 // indirect
+	github.com/prometheus/client_golang v1.7.1 // indirect
+	github.com/spf13/pflag v1.0.5
+	github.com/stoewer/go-strcase v1.2.0 // indirect
+	go.uber.org/goleak v1.1.10 // indirect
+	go.uber.org/zap v1.15.0 // indirect
+	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect
+	gomodules.xyz/jsonpatch/v2 v2.1.0 // indirect
+	google.golang.org/appengine v1.6.6 // indirect
+	google.golang.org/genproto v0.0.0-20201019141844-1ed22bb0c154 // indirect
+	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
 	k8s.io/api v0.20.2 // indirect
+	k8s.io/apiextensions-apiserver v0.20.1 // indirect
 	k8s.io/apimachinery v0.20.4
-	k8s.io/client-go v0.20.4 // indirect
+	k8s.io/client-go v0.20.4
 	k8s.io/code-generator v0.18.3
-	k8s.io/component-base v0.20.2 // indirect
-	k8s.io/klog v1.0.0 // indirect
-	k8s.io/kubelet v0.18.3 // indirect
-	k8s.io/kubernetes v1.18.3 // indirect
+	k8s.io/component-base v0.20.2
+	k8s.io/klog v1.0.0
+	k8s.io/kubelet v0.18.3
+	k8s.io/kubernetes v1.18.3
 	k8s.io/utils v0.0.0-20210111153108-fddb29f9d009 // indirect
-	sigs.k8s.io/controller-runtime v0.8.0
-	sigs.k8s.io/yaml v1.2.0 // indirect
+	sigs.k8s.io/controller-runtime v0.2.0-alpha.0
+	sigs.k8s.io/yaml v1.2.0
 )
 
 replace (
