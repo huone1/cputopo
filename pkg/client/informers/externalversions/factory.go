@@ -22,13 +22,13 @@ import (
 	sync "sync"
 	time "time"
 
+	versioned "github.com/huone1/cputopo/pkg/client/clientset/versioned"
+	internalinterfaces "github.com/huone1/cputopo/pkg/client/informers/externalversions/internalinterfaces"
+	nodeinfo "github.com/huone1/cputopo/pkg/client/informers/externalversions/nodeinfo"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
-	versioned "github.com/huone1/cputopo/pkg/client/clientset/versioned"
-	internalinterfaces "github.com/huone1/cputopo/pkg/client/informers/externalversions/internalinterfaces"
-	nodeinfo "github.com/huone1/cputopo/pkg/client/informers/externalversions/nodeinfo"
 )
 
 // SharedInformerOption defines the functional option type for SharedInformerFactory.

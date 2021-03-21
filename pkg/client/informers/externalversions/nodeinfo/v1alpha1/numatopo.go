@@ -21,14 +21,14 @@ import (
 	"context"
 	time "time"
 
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	runtime "k8s.io/apimachinery/pkg/runtime"
-	watch "k8s.io/apimachinery/pkg/watch"
-	cache "k8s.io/client-go/tools/cache"
 	nodeinfov1alpha1 "github.com/huone1/cputopo/pkg/apis/nodeinfo/v1alpha1"
 	versioned "github.com/huone1/cputopo/pkg/client/clientset/versioned"
 	internalinterfaces "github.com/huone1/cputopo/pkg/client/informers/externalversions/internalinterfaces"
 	v1alpha1 "github.com/huone1/cputopo/pkg/client/listers/nodeinfo/v1alpha1"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	runtime "k8s.io/apimachinery/pkg/runtime"
+	watch "k8s.io/apimachinery/pkg/watch"
+	cache "k8s.io/client-go/tools/cache"
 )
 
 // NumatopoInformer provides access to a shared informer and lister for

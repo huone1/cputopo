@@ -20,10 +20,10 @@ package versioned
 import (
 	"fmt"
 
+	nodeinfov1alpha1 "github.com/huone1/cputopo/pkg/client/clientset/versioned/typed/nodeinfo/v1alpha1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"
-	nodeinfov1alpha1 "github.com/huone1/cputopo/pkg/client/clientset/versioned/typed/nodeinfo/v1alpha1"
 )
 
 type Interface interface {

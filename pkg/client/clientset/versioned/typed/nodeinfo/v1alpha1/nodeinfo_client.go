@@ -18,9 +18,9 @@ limitations under the License.
 package v1alpha1
 
 import (
-	rest "k8s.io/client-go/rest"
 	v1alpha1 "github.com/huone1/cputopo/pkg/apis/nodeinfo/v1alpha1"
 	"github.com/huone1/cputopo/pkg/client/clientset/versioned/scheme"
+	rest "k8s.io/client-go/rest"
 )
 
 type NodeinfoV1alpha1Interface interface {
