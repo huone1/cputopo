@@ -31,6 +31,12 @@ type ResourceInfo struct {
 	Capacity    int `json:"capacity,omitempty"`
 }
 
+type CPUInfo struct {
+	NUMANodeID int `json:"numa,omitempty"`
+	SocketID   int `json:"socket,omitempty"`
+	CoreID     int `json:"core,omitempty"`
+}
+
 type PolicyName string
 
 const (
@@ -48,6 +54,11 @@ type NumatopoSpec struct {
 	// Key is resource name
 	// +optional
 	NumaResMap map[string]ResourceInfoMap `json:"numares,omitempty"`
+
+	// Specifies the cpu topology info
+	// Key is cpu id
+	// +optional
+	CpuDetail   map[string]CPUInfo `json:"cpuDetail,omitempty"`
 }
 
 // +genclient

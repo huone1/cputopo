@@ -49,6 +49,7 @@ func CreateOrUpdateNumatopo(client *versioned.Clientset) {
 			Spec: v1alpha1.NumatopoSpec{
 				Policies:   GetPolicy(),
 				NumaResMap: GetAllResTopoInfo(),
+				CpuDetail:  GetCpusDetail(),
 			},
 		}
 
@@ -60,6 +61,7 @@ func CreateOrUpdateNumatopo(client *versioned.Clientset) {
 		numaInfo.Spec = v1alpha1.NumatopoSpec{
 			Policies:   GetPolicy(),
 			NumaResMap: GetAllResTopoInfo(),
+			CpuDetail:  GetCpusDetail(),
 		}
 		_, err = client.NodeinfoV1alpha1().Numatopos("default").Update(context.TODO(), numaInfo, metav1.UpdateOptions{})
 		if err != nil {

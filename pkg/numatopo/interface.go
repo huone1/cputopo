@@ -9,4 +9,5 @@ type NumaInfo interface {
 	Name() string
 	Update(opt *args.Argument) NumaInfo
 	GetResourceInfoMap() v1alpha1.ResourceInfoMap
+	GetCpuDetail() map[string]v1alpha1.CPUInfo
 }

@@ -15,18 +15,11 @@ import (
 	"github.com/huone1/cputopo/pkg/util"
 )
 
-// CPUInfo contains the NUMA, socket, and core IDs associated with a CPU.
-type CPUInfo struct {
-	NUMANodeID int
-	SocketID   int
-	CoreID     int
-}
-
 type CpuNumaInfo struct {
 	NUMANodes   []int
 	NUMA2CpuCap map[int]int
 	cpu2NUMA    map[int]int
-	cpuDetail   map[int]CPUInfo
+	cpuDetail   map[int]v1alpha1.CPUInfo
 
 	NUMA2FreeCpus    map[int][]int
 	NUMA2FreeCpusNum map[int]int
@@ -36,7 +29,7 @@ func NewCpuNumaInfo() *CpuNumaInfo {
 	numaInfo := &CpuNumaInfo{
 		NUMA2CpuCap:      make(map[int]int),
 		cpu2NUMA:         make(map[int]int),
-		cpuDetail:        make(map[int]CPUInfo),
+		cpuDetail:        make(map[int]v1alpha1.CPUInfo),
 		NUMA2FreeCpus:    make(map[int][]int),
 		NUMA2FreeCpusNum: make(map[int]int),
 	}
@@ -144,22 +137,21 @@ func (info *CpuNumaInfo) Update(opt *args.Argument) NumaInfo {
 	return nil
 }
 
-func (info *CpuNumaInfo) getAllCpuTopoInfo(devicePath string) map[int]CPUInfo {
-	cpuTopoInfo := make(map[int]CPUInfo)
+func (info *CpuNumaInfo) getAllCpuTopoInfo(devicePath string) map[int]v1alpha1.CPUInfo {
+	cpuTopoInfo := make(map[int]v1alpha1.CPUInfo)
 	for cpuId, numaId := range info.cpu2NUMA {
 		coreId, socketId, err := getCoreIdScoketIdForcpu(devicePath, cpuId)
 		if err != nil {
 			return nil
 		}
 
-		cpuTopoInfo[cpuId] = CPUInfo{
+		cpuTopoInfo[cpuId] = v1alpha1.CPUInfo{
 			NUMANodeID: numaId,
 			CoreID:     coreId,
 			SocketID:   socketId,
 		}
 	}
 
-	info.cpuDetail = cpuTopoInfo
 	return cpuTopoInfo
 }
 
@@ -204,4 +196,14 @@ func (info *CpuNumaInfo) GetResourceInfoMap() v1alpha1.ResourceInfoMap {
 	}
 
 	return resMap
+}
+
+func (info *CpuNumaInfo) GetCpuDetail() map[string]v1alpha1.CPUInfo{
+	allCpuTopoInfo := make(map[string]v1alpha1.CPUInfo)
+
+	for cpuId, cpuInfo := range info.cpuDetail {
+		allCpuTopoInfo[strconv.Itoa(cpuId)] = cpuInfo
+	}
+
+	return allCpuTopoInfo
 }
