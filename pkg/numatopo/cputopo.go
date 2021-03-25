@@ -140,6 +140,7 @@ func (info *CpuNumaInfo) Update(opt *args.Argument) NumaInfo {
 		return newInfo
 	}
 
+	klog.V(3).Infof("cpuDetail : %v", newInfo.cpuDetail)
 	return nil
 }
 
@@ -191,10 +192,6 @@ func getCoreIdScoketIdForcpu(devicePath string, cpuId int) (coreId, socketId int
 	socketId = tmpData[0]
 
 	return coreId, socketId, nil
-}
-
-func getCoreIdForcpu(cpupath string, cpuId int) CPUInfo {
-
 }
 
 func (info *CpuNumaInfo) GetResourceInfoMap() v1alpha1.ResourceInfoMap {
