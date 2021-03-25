@@ -49,7 +49,9 @@ spec:
                 additionalProperties:
                   properties:
                     allocatable:
-                      type: integer
+                      items:
+                        type: integer
+                      type: array
                     capacity:
                       type: integer
                   type: object

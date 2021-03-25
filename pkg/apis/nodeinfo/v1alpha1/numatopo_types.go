@@ -27,7 +27,7 @@ import (
 type ResourceInfoMap map[string]ResourceInfo
 
 type ResourceInfo struct {
-	Allocatable int `json:"allocatable,omitempty"`
+	Allocatable []int `json:"allocatable,omitempty"`
 	Capacity    int `json:"capacity,omitempty"`
 }
 

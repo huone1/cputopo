@@ -189,7 +189,7 @@ func (info *CpuNumaInfo) GetResourceInfoMap() v1alpha1.ResourceInfoMap {
 	resMap := make(v1alpha1.ResourceInfoMap)
 	for _, numaId := range info.NUMANodes {
 		resMap[strconv.Itoa(numaId)] = v1alpha1.ResourceInfo{
-			Allocatable: info.NUMA2FreeCpusNum[numaId],
+			Allocatable: info.NUMA2FreeCpus[numaId],
 			Capacity:    info.NUMA2CpuCap[numaId],
 		}
 	}
