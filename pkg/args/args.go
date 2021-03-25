@@ -20,7 +20,7 @@ type ClientOptions struct {
 type Argument struct {
 	CheckInterval     time.Duration
 	KubeletConf       string
-	DevicePath          string
+	DevicePath        string
 	CpuMngstate       string
 	KubeClientOptions ClientOptions
 }

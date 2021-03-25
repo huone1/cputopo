@@ -1,9 +1,9 @@
 package numatopo
 
 import (
+	"github.com/huone1/cputopo/pkg/apis/nodeinfo/v1alpha1"
 	"io/ioutil"
 	"reflect"
-	"github.com/huone1/cputopo/pkg/apis/nodeinfo/v1alpha1"
 
 	"k8s.io/klog"
 	kubeletconfigv1beta1 "k8s.io/kubelet/config/v1beta1"
