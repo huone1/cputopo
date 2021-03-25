@@ -32,6 +32,18 @@ spec:
         spec:
           description: Specification of the numa information of the worker node
           properties:
+            cpuDetail:
+              additionalProperties:
+                properties:
+                  core:
+                    type: integer
+                  numa:
+                    type: integer
+                  socket:
+                    type: integer
+                type: object
+              description: Specifies the cpu topology info Key is cpu id
+              type: object
             numares:
               additionalProperties:
                 additionalProperties:
@@ -55,9 +67,9 @@ spec:
       type: object
   version: v1alpha1
   versions:
-    - name: v1alpha1
-      served: true
-      storage: true
+  - name: v1alpha1
+    served: true
+    storage: true
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
