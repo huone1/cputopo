@@ -133,7 +133,6 @@ func (info *CpuNumaInfo) Update(opt *args.Argument) NumaInfo {
 		return newInfo
 	}
 
-	klog.V(3).Infof("cpuDetail : %v", newInfo.cpuDetail)
 	return nil
 }
 
