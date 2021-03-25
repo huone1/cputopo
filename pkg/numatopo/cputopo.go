@@ -35,7 +35,7 @@ func NewCpuNumaInfo() *CpuNumaInfo {
 	return numaInfo
 }
 
-func (info *CpuNumaInfo) Name() v1alpha1.ResourceName {
+func (info *CpuNumaInfo) Name() string {
 	return "cpu"
 }
 
@@ -121,9 +121,10 @@ func (info *CpuNumaInfo) numaAllocUpdate(cpuMngstate string) {
 }
 
 func (info *CpuNumaInfo) Update(opt *args.Argument) NumaInfo {
+	cpuNumaBasePath := filepath.Join(opt.DevicePath, "node")
 	newInfo := NewCpuNumaInfo()
-	newInfo.NUMANodes = getNumaOnline(filepath.Join(opt.NumaPath, "online"))
-	newInfo.numaCapUpdate(opt.NumaPath)
+	newInfo.NUMANodes = getNumaOnline(filepath.Join(cpuNumaBasePath, "online"))
+	newInfo.numaCapUpdate(cpuNumaBasePath)
 	newInfo.numaAllocUpdate(opt.CpuMngstate)
 
 	if !reflect.DeepEqual(newInfo, info) {

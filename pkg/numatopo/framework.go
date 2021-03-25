@@ -5,7 +5,7 @@ import (
 	"github.com/huone1/cputopo/pkg/args"
 )
 
-var numaMap = map[v1alpha1.ResourceName]NumaInfo{}
+var numaMap = map[string]NumaInfo{}
 
 func RegisterNumaType(info NumaInfo) {
 	numaMap[info.Name()] = info
@@ -27,8 +27,8 @@ func TopoInfoUpdate(opt *args.Argument) bool {
 	return isChg
 }
 
-func GetAllResTopoInfo() map[v1alpha1.ResourceName]v1alpha1.ResourceInfoMap {
-	numaResMap := make(map[v1alpha1.ResourceName]v1alpha1.ResourceInfoMap)
+func GetAllResTopoInfo() map[string]v1alpha1.ResourceInfoMap {
+	numaResMap := make(map[string]v1alpha1.ResourceInfoMap)
 
 	for str, info := range numaMap {
 		numaResMap[str] = info.GetResourceInfoMap()

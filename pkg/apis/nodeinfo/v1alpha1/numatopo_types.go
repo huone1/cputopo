@@ -38,8 +38,6 @@ const (
 	TopologyManagerPolicy PolicyName = "TopologyManagerPolicy"
 )
 
-type ResourceName string
-
 // NumatopoSpec defines the desired state of Numatopo
 type NumatopoSpec struct {
 	// Specifies the policy of the manager
@@ -49,7 +47,7 @@ type NumatopoSpec struct {
 	// Specifies the numa info for the resource
 	// Key is resource name
 	// +optional
-	NumaResMap map[ResourceName]ResourceInfoMap `json:"numares,omitempty"`
+	NumaResMap map[string]ResourceInfoMap `json:"numares,omitempty"`
 }
 
 // +genclient

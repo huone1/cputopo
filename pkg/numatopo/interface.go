@@ -6,7 +6,7 @@ import (
 )
 
 type NumaInfo interface {
-	Name() v1alpha1.ResourceName
+	Name() string
 	Update(opt *args.Argument) NumaInfo
 	GetResourceInfoMap() v1alpha1.ResourceInfoMap
 }

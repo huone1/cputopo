@@ -20,7 +20,7 @@ type ClientOptions struct {
 type Argument struct {
 	CheckInterval     time.Duration
 	KubeletConf       string
-	NumaPath          string
+	DevicePath          string
 	CpuMngstate       string
 	KubeClientOptions ClientOptions
 }
@@ -32,7 +32,7 @@ func NewArgument() *Argument {
 func (args *Argument) AddFlags(fs *pflag.FlagSet) {
 	fs.DurationVar(&args.CheckInterval, "check-period", defaultCheckInterval, "Burst to use while talking with kubernetes apiserver")
 	fs.StringVar(&args.KubeletConf, "kubelet-conf", args.KubeletConf, "Path to kubelet configure file")
-	fs.StringVar(&args.NumaPath, "node-path", args.NumaPath, "Path to numa node information")
+	fs.StringVar(&args.NumaPath, "device-path", args.NumaPath, "Path to numa node information")
 	fs.StringVar(&args.CpuMngstate, "cpu-manager-state", args.CpuMngstate, "Path to cpu_manager_state")
 
 	fs.StringVar(&args.KubeClientOptions.Master, "master", args.KubeClientOptions.Master, "The address of the Kubernetes API server (overrides any value in kubeconfig)")
