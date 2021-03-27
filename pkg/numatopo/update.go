@@ -16,8 +16,7 @@ import (
 func NodeInfoRefresh(opt *args.Argument) bool {
 	isChange := false
 
-	config := GetkubeletConfig(opt.KubeletConf)
-	if config != nil {
+	if GetkubeletConfig(opt.KubeletConf) {
 		isChange = true
 	}
 
@@ -48,6 +47,7 @@ func CreateOrUpdateNumatopo(client *versioned.Clientset) {
 			},
 			Spec: v1alpha1.NumatopoSpec{
 				Policies:   GetPolicy(),
+				ResReserved: GetResReserved(),
 				NumaResMap: GetAllResTopoInfo(),
 				CpuDetail:  GetCpusDetail(),
 			},
@@ -60,6 +60,7 @@ func CreateOrUpdateNumatopo(client *versioned.Clientset) {
 	} else {
 		numaInfo.Spec = v1alpha1.NumatopoSpec{
 			Policies:   GetPolicy(),
+			ResReserved: GetResReserved(),
 			NumaResMap: GetAllResTopoInfo(),
 			CpuDetail:  GetCpusDetail(),
 		}

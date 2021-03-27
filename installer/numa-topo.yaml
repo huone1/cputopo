@@ -65,6 +65,11 @@ spec:
                 type: string
               description: Specifies the policy of the manager
               type: object
+            resReserved:
+              additionalProperties:
+                type: string
+              description: Specifies the reserved resource of the node
+              type: object
           type: object
       type: object
   version: v1alpha1

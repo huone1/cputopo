@@ -50,6 +50,10 @@ type NumatopoSpec struct {
 	// +optional
 	Policies map[PolicyName]string `json:"policies,omitempty"`
 
+	// Specifies the reserved resource of the node
+	// +optional
+	ResReserved map[string]string `json:"resReserved,omitempty"`
+
 	// Specifies the numa info for the resource
 	// Key is resource name
 	// +optional
