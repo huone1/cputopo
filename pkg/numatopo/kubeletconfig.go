@@ -46,7 +46,7 @@ func GetkubeletConfig(confPath string) bool {
 	klConfig, err := GetKubeletConfigFromLocalFile(confPath)
 	if err != nil {
 		klog.Errorf("get topology Manager Policy failed, err: %v", err)
-		return nil
+		return false
 	}
 
 	var isChange bool = false
