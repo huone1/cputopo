@@ -3,6 +3,7 @@ package numatopo
 import (
 	"fmt"
 	"io/ioutil"
+	"k8s.io/kubernetes/pkg/kubelet/cm/cpuset"
 	"path/filepath"
 	"reflect"
 	"strconv"
@@ -22,7 +23,6 @@ type CpuNumaInfo struct {
 	cpuDetail   map[int]v1alpha1.CPUInfo
 
 	NUMA2FreeCpus    map[int][]int
-	NUMA2FreeCpusNum map[int]int
 }
 
 func NewCpuNumaInfo() *CpuNumaInfo {
@@ -31,7 +31,6 @@ func NewCpuNumaInfo() *CpuNumaInfo {
 		cpu2NUMA:         make(map[int]int),
 		cpuDetail:        make(map[int]v1alpha1.CPUInfo),
 		NUMA2FreeCpus:    make(map[int][]int),
-		NUMA2FreeCpusNum: make(map[int]int),
 	}
 
 	return numaInfo
@@ -116,10 +115,6 @@ func (info *CpuNumaInfo) numaAllocUpdate(cpuMngstate string) {
 		numaId := info.cpu2numa(cpuid)
 		info.NUMA2FreeCpus[numaId] = append(info.NUMA2FreeCpus[numaId], cpuid)
 	}
-
-	for numaId, cpus := range info.NUMA2FreeCpus {
-		info.NUMA2FreeCpusNum[numaId] = len(cpus)
-	}
 }
 
 func (info *CpuNumaInfo) Update(opt *args.Argument) NumaInfo {
@@ -185,16 +180,23 @@ func getCoreIdScoketIdForcpu(devicePath string, cpuId int) (coreId, socketId int
 	return coreId, socketId, nil
 }
 
-func (info *CpuNumaInfo) GetResourceInfoMap() v1alpha1.ResourceInfoMap {
-	resMap := make(v1alpha1.ResourceInfoMap)
-	for _, numaId := range info.NUMANodes {
-		resMap[strconv.Itoa(numaId)] = v1alpha1.ResourceInfo{
-			Allocatable: info.NUMA2FreeCpus[numaId],
-			Capacity:    info.NUMA2CpuCap[numaId],
-		}
+func (info *CpuNumaInfo) GetResourceInfoMap() v1alpha1.ResourceInfo {
+	sets := cpuset.NewCPUSet()
+	var cap = 0
+
+	for _, freeCpus := range info.NUMA2FreeCpus {
+		tmp := cpuset.NewCPUSet(freeCpus...)
+		sets = sets.Union(tmp)
 	}
 
-	return resMap
+	for numaId := range info.NUMA2CpuCap {
+		cap += info.NUMA2CpuCap[numaId]
+	}
+
+	return v1alpha1.ResourceInfo{
+		Allocatable: sets.String(),
+		Capacity: cap,
+	}
 }
 
 func (info *CpuNumaInfo) GetCpuDetail() map[string]v1alpha1.CPUInfo{

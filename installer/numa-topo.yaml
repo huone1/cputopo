@@ -46,16 +46,11 @@ spec:
               type: object
             numares:
               additionalProperties:
-                additionalProperties:
-                  properties:
-                    allocatable:
-                      items:
-                        type: integer
-                      type: array
-                    capacity:
-                      type: integer
-                  type: object
-                description: Key is numa ID
+                properties:
+                  allocatable:
+                    type: string
+                  capacity:
+                    type: integer
                 type: object
               description: Specifies the numa info for the resource Key is resource
                 name

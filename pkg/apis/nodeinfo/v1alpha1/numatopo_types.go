@@ -23,11 +23,8 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
-// Key is numa ID
-type ResourceInfoMap map[string]ResourceInfo
-
 type ResourceInfo struct {
-	Allocatable []int `json:"allocatable,omitempty"`
+	Allocatable string `json:"allocatable,omitempty"`
 	Capacity    int `json:"capacity,omitempty"`
 }
 
@@ -57,7 +54,7 @@ type NumatopoSpec struct {
 	// Specifies the numa info for the resource
 	// Key is resource name
 	// +optional
-	NumaResMap map[string]ResourceInfoMap `json:"numares,omitempty"`
+	NumaResMap map[string]ResourceInfo `json:"numares,omitempty"`
 
 	// Specifies the cpu topology info
 	// Key is cpu id

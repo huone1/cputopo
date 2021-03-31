@@ -27,8 +27,8 @@ func TopoInfoUpdate(opt *args.Argument) bool {
 	return isChg
 }
 
-func GetAllResTopoInfo() map[string]v1alpha1.ResourceInfoMap {
-	numaResMap := make(map[string]v1alpha1.ResourceInfoMap)
+func GetAllResTopoInfo() map[string]v1alpha1.ResourceInfo {
+	numaResMap := make(map[string]v1alpha1.ResourceInfo)
 
 	for str, info := range numaMap {
 		numaResMap[str] = info.GetResourceInfoMap()
