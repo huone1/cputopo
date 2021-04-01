@@ -15,20 +15,21 @@ limitations under the License.
 package main
 
 import (
+	"time"
+
+	"github.com/huone1/cputopo/pkg/args"
+	"github.com/huone1/cputopo/pkg/client/clientset/versioned"
+	"github.com/huone1/cputopo/pkg/numatopo"
 	"github.com/spf13/pflag"
+
 	"k8s.io/apimachinery/pkg/util/wait"
 	cliflag "k8s.io/component-base/cli/flag"
 	"k8s.io/klog"
-	"time"
-	"github.com/huone1/cputopo/pkg/args"
-	"github.com/huone1/cputopo/pkg/numatopo"
-	"github.com/huone1/cputopo/pkg/client/clientset/versioned"
 )
 
 var logFlushFreq = pflag.Duration("log-flush-frequency", 5*time.Second, "Maximum number of seconds between log flushes")
 
-
-func getNumaTopoClient(argument *args.Argument) (*versioned.Clientset, error){
+func getNumaTopoClient(argument *args.Argument) (*versioned.Clientset, error) {
 	config, err := args.BuildConfig(argument.KubeClientOptions)
 	if err != nil {
 		return nil, err
@@ -36,7 +37,6 @@ func getNumaTopoClient(argument *args.Argument) (*versioned.Clientset, error){
 
 	return versioned.NewForConfigOrDie(config), err
 }
-
 
 func main() {
 	klog.InitFlags(nil)

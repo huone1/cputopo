@@ -3,17 +3,17 @@ package numatopo
 import (
 	"fmt"
 	"io/ioutil"
-	"k8s.io/kubernetes/pkg/kubelet/cm/cpuset"
 	"path/filepath"
 	"reflect"
 	"strconv"
 
-	"k8s.io/klog"
-	cpustate "k8s.io/kubernetes/pkg/kubelet/cm/cpumanager/state"
-
 	"github.com/huone1/cputopo/pkg/apis/nodeinfo/v1alpha1"
 	"github.com/huone1/cputopo/pkg/args"
 	"github.com/huone1/cputopo/pkg/util"
+
+	"k8s.io/klog"
+	cpustate "k8s.io/kubernetes/pkg/kubelet/cm/cpumanager/state"
+	"k8s.io/kubernetes/pkg/kubelet/cm/cpuset"
 )
 
 type CpuNumaInfo struct {
@@ -22,15 +22,15 @@ type CpuNumaInfo struct {
 	cpu2NUMA    map[int]int
 	cpuDetail   map[int]v1alpha1.CPUInfo
 
-	NUMA2FreeCpus    map[int][]int
+	NUMA2FreeCpus map[int][]int
 }
 
 func NewCpuNumaInfo() *CpuNumaInfo {
 	numaInfo := &CpuNumaInfo{
-		NUMA2CpuCap:      make(map[int]int),
-		cpu2NUMA:         make(map[int]int),
-		cpuDetail:        make(map[int]v1alpha1.CPUInfo),
-		NUMA2FreeCpus:    make(map[int][]int),
+		NUMA2CpuCap:   make(map[int]int),
+		cpu2NUMA:      make(map[int]int),
+		cpuDetail:     make(map[int]v1alpha1.CPUInfo),
+		NUMA2FreeCpus: make(map[int][]int),
 	}
 
 	return numaInfo
@@ -195,11 +195,11 @@ func (info *CpuNumaInfo) GetResourceInfoMap() v1alpha1.ResourceInfo {
 
 	return v1alpha1.ResourceInfo{
 		Allocatable: sets.String(),
-		Capacity: cap,
+		Capacity:    cap,
 	}
 }
 
-func (info *CpuNumaInfo) GetCpuDetail() map[string]v1alpha1.CPUInfo{
+func (info *CpuNumaInfo) GetCpuDetail() map[string]v1alpha1.CPUInfo {
 	allCpuTopoInfo := make(map[string]v1alpha1.CPUInfo)
 
 	for cpuId, cpuInfo := range info.cpuDetail {

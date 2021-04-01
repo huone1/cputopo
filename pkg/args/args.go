@@ -1,10 +1,11 @@
 package args
 
 import (
+	"time"
+
 	"github.com/spf13/pflag"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
-	"time"
 )
 
 const (

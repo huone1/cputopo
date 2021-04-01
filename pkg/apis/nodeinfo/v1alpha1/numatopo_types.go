@@ -25,7 +25,7 @@ import (
 
 type ResourceInfo struct {
 	Allocatable string `json:"allocatable,omitempty"`
-	Capacity    int `json:"capacity,omitempty"`
+	Capacity    int    `json:"capacity,omitempty"`
 }
 
 type CPUInfo struct {
@@ -59,7 +59,7 @@ type NumatopoSpec struct {
 	// Specifies the cpu topology info
 	// Key is cpu id
 	// +optional
-	CpuDetail   map[string]CPUInfo `json:"cpuDetail,omitempty"`
+	CpuDetail map[string]CPUInfo `json:"cpuDetail,omitempty"`
 }
 
 // +genclient

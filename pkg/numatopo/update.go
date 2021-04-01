@@ -4,13 +4,13 @@ import (
 	"context"
 	"os"
 
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/klog"
-
 	"github.com/huone1/cputopo/pkg/apis/nodeinfo/v1alpha1"
 	"github.com/huone1/cputopo/pkg/args"
 	"github.com/huone1/cputopo/pkg/client/clientset/versioned"
+
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/klog"
 )
 
 func NodeInfoRefresh(opt *args.Argument) bool {
@@ -46,10 +46,10 @@ func CreateOrUpdateNumatopo(client *versioned.Clientset) {
 				Name: hostname,
 			},
 			Spec: v1alpha1.NumatopoSpec{
-				Policies:   GetPolicy(),
+				Policies:    GetPolicy(),
 				ResReserved: GetResReserved(),
-				NumaResMap: GetAllResTopoInfo(),
-				CpuDetail:  GetCpusDetail(),
+				NumaResMap:  GetAllResTopoInfo(),
+				CpuDetail:   GetCpusDetail(),
 			},
 		}
 
@@ -59,10 +59,10 @@ func CreateOrUpdateNumatopo(client *versioned.Clientset) {
 		}
 	} else {
 		numaInfo.Spec = v1alpha1.NumatopoSpec{
-			Policies:   GetPolicy(),
+			Policies:    GetPolicy(),
 			ResReserved: GetResReserved(),
-			NumaResMap: GetAllResTopoInfo(),
-			CpuDetail:  GetCpusDetail(),
+			NumaResMap:  GetAllResTopoInfo(),
+			CpuDetail:   GetCpusDetail(),
 		}
 		_, err = client.NodeinfoV1alpha1().Numatopos("default").Update(context.TODO(), numaInfo, metav1.UpdateOptions{})
 		if err != nil {

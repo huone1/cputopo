@@ -37,7 +37,7 @@ func GetAllResTopoInfo() map[string]v1alpha1.ResourceInfo {
 	return numaResMap
 }
 
-func GetCpusDetail() map[string]v1alpha1.CPUInfo{
+func GetCpusDetail() map[string]v1alpha1.CPUInfo {
 	for _, info := range numaMap {
 		cpuDetail := info.GetCpuDetail()
 		if cpuDetail == nil {

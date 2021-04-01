@@ -1,23 +1,26 @@
 package numatopo
 
 import (
-	"github.com/huone1/cputopo/pkg/apis/nodeinfo/v1alpha1"
 	"io/ioutil"
-	v1 "k8s.io/api/core/v1"
 	"reflect"
 
+	"github.com/huone1/cputopo/pkg/apis/nodeinfo/v1alpha1"
+
+	"sigs.k8s.io/yaml"
+
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/klog"
 	kubeletconfigv1beta1 "k8s.io/kubelet/config/v1beta1"
-	"sigs.k8s.io/yaml"
+
 )
 
 type kubeletConfig struct {
-	topoPolicy map[v1alpha1.PolicyName]string
+	topoPolicy  map[v1alpha1.PolicyName]string
 	resReserved map[string]string
 }
 
 var config = &kubeletConfig{
-	topoPolicy: make(map[v1alpha1.PolicyName]string),
+	topoPolicy:  make(map[v1alpha1.PolicyName]string),
 	resReserved: make(map[string]string),
 }
 
