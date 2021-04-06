@@ -44,7 +44,7 @@ func GetKubeletConfigFromLocalFile(kubeletConfigPath string) (*kubeletconfigv1be
 	return kubeletConfig, nil
 }
 
-func GetkubeletConfig(confPath string, resReserved string) bool {
+func GetkubeletConfig(confPath string, resReserved map[string]string) bool {
 	klConfig, err := GetKubeletConfigFromLocalFile(confPath)
 	if err != nil {
 		klog.Errorf("get topology Manager Policy failed, err: %v", err)
@@ -65,14 +65,8 @@ func GetkubeletConfig(confPath string, resReserved string) bool {
 	}
 
 	var cpuReserved string
- 	if resReserved != "" {
-		resMap := make(map[string]string)
-		err := yaml.Unmarshal([]byte(resReserved), &resMap)
-		if err == nil {
-			if _, ok := resMap[string(v1.ResourceCPU)]; ok {
-				cpuReserved = resMap[string(v1.ResourceCPU)]
-			}
-		}
+ 	if _, ok := resReserved[string(v1.ResourceCPU)]; ok {
+		cpuReserved = resReserved[string(v1.ResourceCPU)]
 	} else {
 		cpuReserved = klConfig.KubeReserved[string(v1.ResourceCPU)]
 	}

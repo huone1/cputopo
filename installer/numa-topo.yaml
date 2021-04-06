@@ -138,7 +138,6 @@ spec:
             - --kubelet-conf=/host/kubeletconf/config.yaml
             - --cpu-manager-state=/host/kubelet/cpu_manager_state
             - --device-path=/host/device
-            - --res-reserved="{cpu: 80m}"
             - -v=4
             - 2>&1
           env:
