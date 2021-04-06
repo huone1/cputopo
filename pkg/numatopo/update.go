@@ -16,7 +16,7 @@ import (
 func NodeInfoRefresh(opt *args.Argument) bool {
 	isChange := false
 
-	if GetkubeletConfig(opt.KubeletConf) {
+	if GetkubeletConfig(opt.KubeletConf, opt.ResReserved) {
 		isChange = true
 	}
 

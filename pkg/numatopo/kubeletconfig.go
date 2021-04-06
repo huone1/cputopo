@@ -2,16 +2,15 @@ package numatopo
 
 import (
 	"io/ioutil"
+	v1 "k8s.io/api/core/v1"
 	"reflect"
 
 	"github.com/huone1/cputopo/pkg/apis/nodeinfo/v1alpha1"
 
 	"sigs.k8s.io/yaml"
 
-	v1 "k8s.io/api/core/v1"
 	"k8s.io/klog"
 	kubeletconfigv1beta1 "k8s.io/kubelet/config/v1beta1"
-
 )
 
 type kubeletConfig struct {
@@ -45,7 +44,7 @@ func GetKubeletConfigFromLocalFile(kubeletConfigPath string) (*kubeletconfigv1be
 	return kubeletConfig, nil
 }
 
-func GetkubeletConfig(confPath string) bool {
+func GetkubeletConfig(confPath string, resReserved string) bool {
 	klConfig, err := GetKubeletConfigFromLocalFile(confPath)
 	if err != nil {
 		klog.Errorf("get topology Manager Policy failed, err: %v", err)
@@ -65,8 +64,21 @@ func GetkubeletConfig(confPath string) bool {
 		isChange = true
 	}
 
-	if !reflect.DeepEqual(config.resReserved[string(v1.ResourceCPU)], klConfig.KubeReserved[string(v1.ResourceCPU)]) {
-		config.resReserved[string(v1.ResourceCPU)] = klConfig.KubeReserved[string(v1.ResourceCPU)]
+	var cpuReserved string
+ 	if resReserved != "" {
+		resMap := make(map[string]string)
+		err := yaml.Unmarshal([]byte(resReserved), &resMap)
+		if err == nil {
+			if _, ok := resMap[string(v1.ResourceCPU)]; ok {
+				cpuReserved = resMap[string(v1.ResourceCPU)]
+			}
+		}
+	} else {
+		cpuReserved = klConfig.KubeReserved[string(v1.ResourceCPU)]
+	}
+
+	if config.resReserved[string(v1.ResourceCPU)] != cpuReserved {
+		config.resReserved[string(v1.ResourceCPU)] = cpuReserved
 		isChange = true
 	}
 

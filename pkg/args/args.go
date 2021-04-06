@@ -23,11 +23,13 @@ type Argument struct {
 	KubeletConf       string
 	DevicePath        string
 	CpuMngstate       string
+	ResReserved       string
 	KubeClientOptions ClientOptions
 }
 
 func NewArgument() *Argument {
-	return &Argument{}
+	return &Argument{
+	}
 }
 
 func (args *Argument) AddFlags(fs *pflag.FlagSet) {
@@ -35,6 +37,7 @@ func (args *Argument) AddFlags(fs *pflag.FlagSet) {
 	fs.StringVar(&args.KubeletConf, "kubelet-conf", args.KubeletConf, "Path to kubelet configure file")
 	fs.StringVar(&args.DevicePath, "device-path", args.DevicePath, "Path to device information")
 	fs.StringVar(&args.CpuMngstate, "cpu-manager-state", args.CpuMngstate, "Path to cpu_manager_state")
+	fs.StringVar(&args.ResReserved, "res-reserved", args.CpuMngstate, "resource reserved information")
 
 	fs.StringVar(&args.KubeClientOptions.Master, "master", args.KubeClientOptions.Master, "The address of the Kubernetes API server (overrides any value in kubeconfig)")
 	fs.StringVar(&args.KubeClientOptions.KubeConfig, "kubeconfig", args.KubeClientOptions.KubeConfig, "Path to kubeconfig file with authorization and master location information.")
