@@ -17,6 +17,9 @@ limitations under the License.
 package main
 
 import (
+	"context"
+	"fmt"
+	"os"
 	"time"
 
 	"github.com/huone1/cputopo/pkg/args"
@@ -24,6 +27,8 @@ import (
 	"github.com/huone1/cputopo/pkg/numatopo"
 	"github.com/spf13/pflag"
 
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
 	cliflag "k8s.io/component-base/cli/flag"
 	"k8s.io/klog"
@@ -38,6 +43,26 @@ func getNumaTopoClient(argument *args.Argument) (*versioned.Clientset, error) {
 	}
 
 	return versioned.NewForConfigOrDie(config), err
+}
+
+func numatopoIsExist(client *versioned.Clientset) (error, bool) {
+	hostname := os.Getenv("MY_NODE_NAME")
+	if hostname == "" {
+		klog.Errorf("get Hostname failed.")
+		return fmt.Errorf("get Hostname failed."), false
+	}
+
+	_, err := client.NodeinfoV1alpha1().Numatopos("default").Get(context.TODO(), hostname, metav1.GetOptions{})
+	if err != nil {
+		if !apierrors.IsNotFound(err) {
+			klog.Errorf("get Numatopo for node %s failed, err=%v", hostname, err)
+			return nil, false
+		}
+
+		return err, false
+	}
+
+	return nil, true
 }
 
 func main() {
@@ -57,8 +82,15 @@ func main() {
 	}
 
 	for {
+		err, exist := numatopoIsExist(nodeInfoClient)
+		if err != nil {
+			klog.Errorf("get numatopo failed.")
+			time.Sleep(opt.CheckInterval)
+			continue
+		}
+
 		isChg := numatopo.NodeInfoRefresh(opt)
-		if isChg {
+		if isChg || !exist {
 			klog.V(4).Infof("node info changes.")
 			numatopo.CreateOrUpdateNumatopo(nodeInfoClient)
 		}
