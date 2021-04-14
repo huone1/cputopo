@@ -56,10 +56,10 @@ func numatopoIsExist(client *versioned.Clientset) (error, bool) {
 	if err != nil {
 		if !apierrors.IsNotFound(err) {
 			klog.Errorf("get Numatopo for node %s failed, err=%v", hostname, err)
-			return nil, false
+			return err, false
 		}
 
-		return err, false
+		return nil, false
 	}
 
 	return nil, true
