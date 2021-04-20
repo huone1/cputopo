@@ -6,7 +6,19 @@ include Makefile.def
 init:
 	mkdir -p ${BIN_DIR}
 
-image: init
+fmt:
+	go fmt ./pkg/...
+	go fmt ./main.go
+
+vet:
+	go vet ./pkg/...
+	go vet ./main.go
+
+lint:
+	golint ./pkg/...
+	golint ./main.go
+   
+image: init fmt vet lint
 	CGO_ENABLED=0 go build -ldflags ${LD_FLAGS} -o ${BIN_DIR}/numatopo ./
 	cp ${BIN_DIR}/numatopo ./docker/numatopo
 	docker build --no-cache -t volcanosh/numatopo:${TAG} ./docker/

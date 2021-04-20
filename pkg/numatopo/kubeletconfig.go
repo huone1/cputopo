@@ -81,7 +81,7 @@ func GetkubeletConfig(confPath string, resReserved map[string]string) bool {
 	}
 
 	var cpuReserved string
- 	if _, ok := resReserved[string(v1.ResourceCPU)]; ok {
+	if _, ok := resReserved[string(v1.ResourceCPU)]; ok {
 		cpuReserved = resReserved[string(v1.ResourceCPU)]
 	} else {
 		cpuReserved = klConfig.KubeReserved[string(v1.ResourceCPU)]
