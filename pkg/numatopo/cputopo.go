@@ -59,13 +59,13 @@ func (info *CpuNumaInfo) Name() string {
 func getNumaOnline(onlinePath string) []int {
 	data, err := ioutil.ReadFile(onlinePath)
 	if err != nil {
-		klog.Errorf("getNumaOnline read file failed.")
+		klog.Errorf("Read numa online file failed, err=%v.", err)
 		return []int{}
 	}
 
 	nodeList, apiErr := util.Parse(string(data))
 	if apiErr != nil {
-		klog.Errorf("getNumaOnline parse failed.")
+		klog.Errorf("Parse numa online file failed, err=%v.", apiErr)
 		return []int{}
 	}
 
@@ -80,13 +80,13 @@ func getNumaNodeCpucap(nodePath string, nodeId int) []int {
 	cpuPath := filepath.Join(nodePath, fmt.Sprintf("node%d", nodeId), "cpulist")
 	data, err := ioutil.ReadFile(cpuPath)
 	if err != nil {
-		klog.Errorf("numa node cpulist read file failed, err: %v", err)
+		klog.Errorf("Read node%d cpulist file failed, err: %v", nodeId, err)
 		return nil
 	}
 
 	cpuList, apiErr := util.Parse(string(data))
 	if apiErr != nil {
-		klog.Errorf("numa node cpulist parse failed, err: %v", err)
+		klog.Errorf("Parse node%d cpulist file failed, err: %v", nodeId, apiErr)
 		return nil
 	}
 
@@ -96,7 +96,7 @@ func getNumaNodeCpucap(nodePath string, nodeId int) []int {
 func getFreeCpulist(cpuMngstate string) []int {
 	data, err := ioutil.ReadFile(cpuMngstate)
 	if err != nil {
-		klog.Errorf("cpu-mem-state read failed, err: %v", err)
+		klog.Errorf("Read cpu_manager_state failed, err: %v", err)
 		return nil
 	}
 
@@ -105,7 +105,7 @@ func getFreeCpulist(cpuMngstate string) []int {
 
 	cpuList, apiErr := util.Parse(checkpoint.DefaultCPUSet)
 	if apiErr != nil {
-		klog.Errorf("cpu-mem-state parse failed, err: %v", err)
+		klog.Errorf("Parse cpu_manager_state failed, err: %v", err)
 		return nil
 	}
 
@@ -152,6 +152,7 @@ func (info *CpuNumaInfo) getAllCpuTopoInfo(devicePath string) map[int]v1alpha1.C
 	for cpuId, numaId := range info.cpu2NUMA {
 		coreId, socketId, err := getCoreIdScoketIdForcpu(devicePath, cpuId)
 		if err != nil {
+			klog.Errorf("Get cpu detail failed, err=<%v>", err)
 			return nil
 		}
 

@@ -48,14 +48,12 @@ func getNumaTopoClient(argument *args.Argument) (*versioned.Clientset, error) {
 func numatopoIsExist(client *versioned.Clientset) (error, bool) {
 	hostname := os.Getenv("MY_NODE_NAME")
 	if hostname == "" {
-		klog.Errorf("get Hostname failed.")
 		return fmt.Errorf("get Hostname failed."), false
 	}
 
 	_, err := client.NodeinfoV1alpha1().Numatopos("default").Get(context.TODO(), hostname, metav1.GetOptions{})
 	if err != nil {
 		if !apierrors.IsNotFound(err) {
-			klog.Errorf("get Numatopo for node %s failed, err=%v", hostname, err)
 			return err, false
 		}
 
@@ -77,21 +75,21 @@ func main() {
 
 	nodeInfoClient, err := getNumaTopoClient(opt)
 	if err != nil {
-		klog.Errorf("get numainfo client failed, err = %v", err)
+		klog.Errorf("Get numainfo client failed, err = %v", err)
 		return
 	}
 
 	for {
 		err, exist := numatopoIsExist(nodeInfoClient)
 		if err != nil {
-			klog.Errorf("get numatopo failed.")
+			klog.Errorf("Get numatopo failed, err= %v", err)
 			time.Sleep(opt.CheckInterval)
 			continue
 		}
 
 		isChg := numatopo.NodeInfoRefresh(opt)
 		if isChg || !exist {
-			klog.V(4).Infof("node info changes.")
+			klog.V(4).Infof("Node info changes.")
 			numatopo.CreateOrUpdateNumatopo(nodeInfoClient)
 		}
 
