@@ -32,7 +32,8 @@ import (
 	"k8s.io/kubernetes/pkg/kubelet/cm/cpuset"
 )
 
-type CpuNumaInfo struct {
+// CPUNumaInfo is the obkect to maintain the cpu information
+type CPUNumaInfo struct {
 	NUMANodes   []int
 	NUMA2CpuCap map[int]int
 	cpu2NUMA    map[int]int
@@ -41,8 +42,9 @@ type CpuNumaInfo struct {
 	NUMA2FreeCpus map[int][]int
 }
 
-func NewCpuNumaInfo() *CpuNumaInfo {
-	numaInfo := &CpuNumaInfo{
+// NewCPUNumaInfo init CPUNumaInfo struct object
+func NewCPUNumaInfo() *CPUNumaInfo {
+	numaInfo := &CPUNumaInfo{
 		NUMA2CpuCap:   make(map[int]int),
 		cpu2NUMA:      make(map[int]int),
 		cpuDetail:     make(map[int]v1alpha1.CPUInfo),
@@ -52,7 +54,8 @@ func NewCpuNumaInfo() *CpuNumaInfo {
 	return numaInfo
 }
 
-func (info *CpuNumaInfo) Name() string {
+// Name return function name
+func (info *CPUNumaInfo) Name() string {
 	return "cpu"
 }
 
@@ -72,28 +75,28 @@ func getNumaOnline(onlinePath string) []int {
 	return nodeList
 }
 
-func (info *CpuNumaInfo) cpu2numa(cpuid int) int {
+func (info *CPUNumaInfo) cpu2numa(cpuid int) int {
 	return info.cpu2NUMA[cpuid]
 }
 
-func getNumaNodeCpucap(nodePath string, nodeId int) []int {
-	cpuPath := filepath.Join(nodePath, fmt.Sprintf("node%d", nodeId), "cpulist")
+func getNumaNodeCpucap(nodePath string, nodeID int) []int {
+	cpuPath := filepath.Join(nodePath, fmt.Sprintf("node%d", nodeID), "cpulist")
 	data, err := ioutil.ReadFile(cpuPath)
 	if err != nil {
-		klog.Errorf("Read node%d cpulist file failed, err: %v", nodeId, err)
+		klog.Errorf("Read node%d cpulist file failed, err: %v", nodeID, err)
 		return nil
 	}
 
 	cpuList, apiErr := util.Parse(string(data))
 	if apiErr != nil {
-		klog.Errorf("Parse node%d cpulist file failed, err: %v", nodeId, apiErr)
+		klog.Errorf("Parse node%d cpulist file failed, err: %v", nodeID, apiErr)
 		return nil
 	}
 
 	return cpuList
 }
 
-func getFreeCpulist(cpuMngstate string) []int {
+func getFreeCPUList(cpuMngstate string) []int {
 	data, err := ioutil.ReadFile(cpuMngstate)
 	if err != nil {
 		klog.Errorf("Read cpu_manager_state failed, err: %v", err)
@@ -112,7 +115,7 @@ func getFreeCpulist(cpuMngstate string) []int {
 	return cpuList
 }
 
-func (info *CpuNumaInfo) numaCapUpdate(numaPath string) {
+func (info *CPUNumaInfo) numaCapUpdate(numaPath string) {
 	for _, node := range info.NUMANodes {
 		cpuList := getNumaNodeCpucap(numaPath, node)
 		info.NUMA2CpuCap[node] = len(cpuList)
@@ -125,21 +128,23 @@ func (info *CpuNumaInfo) numaCapUpdate(numaPath string) {
 	return
 }
 
-func (info *CpuNumaInfo) numaAllocUpdate(cpuMngstate string) {
-	freeCpuList := getFreeCpulist(cpuMngstate)
-	for _, cpuid := range freeCpuList {
-		numaId := info.cpu2numa(cpuid)
-		info.NUMA2FreeCpus[numaId] = append(info.NUMA2FreeCpus[numaId], cpuid)
+func (info *CPUNumaInfo) numaAllocUpdate(cpuMngstate string) {
+	freeCPUList := getFreeCPUList(cpuMngstate)
+	for _, cpuid := range freeCPUList {
+		numaID := info.cpu2numa(cpuid)
+		info.NUMA2FreeCpus[numaID] = append(info.NUMA2FreeCpus[numaID], cpuid)
 	}
 }
 
-func (info *CpuNumaInfo) Update(opt *args.Argument) NumaInfo {
+// Update returns the latest cpu numa info
+// if data is changed , return the latest , otherwise nil
+func (info *CPUNumaInfo) Update(opt *args.Argument) NumaInfo {
 	cpuNumaBasePath := filepath.Join(opt.DevicePath, "node")
-	newInfo := NewCpuNumaInfo()
+	newInfo := NewCPUNumaInfo()
 	newInfo.NUMANodes = getNumaOnline(filepath.Join(cpuNumaBasePath, "online"))
 	newInfo.numaCapUpdate(cpuNumaBasePath)
-	newInfo.numaAllocUpdate(opt.CpuMngstate)
-	newInfo.cpuDetail = newInfo.getAllCpuTopoInfo(opt.DevicePath)
+	newInfo.numaAllocUpdate(opt.CPUMngstate)
+	newInfo.cpuDetail = newInfo.getAllCPUTopoInfo(opt.DevicePath)
 	if !reflect.DeepEqual(newInfo, info) {
 		return newInfo
 	}
@@ -147,57 +152,58 @@ func (info *CpuNumaInfo) Update(opt *args.Argument) NumaInfo {
 	return nil
 }
 
-func (info *CpuNumaInfo) getAllCpuTopoInfo(devicePath string) map[int]v1alpha1.CPUInfo {
+func (info *CPUNumaInfo) getAllCPUTopoInfo(devicePath string) map[int]v1alpha1.CPUInfo {
 	cpuTopoInfo := make(map[int]v1alpha1.CPUInfo)
-	for cpuId, numaId := range info.cpu2NUMA {
-		coreId, socketId, err := getCoreIdScoketIdForcpu(devicePath, cpuId)
+	for cpuID, numaID := range info.cpu2NUMA {
+		coreID, socketID, err := getCoreIDScoketIDForcpu(devicePath, cpuID)
 		if err != nil {
 			klog.Errorf("Get cpu detail failed, err=<%v>", err)
 			return nil
 		}
 
-		cpuTopoInfo[cpuId] = v1alpha1.CPUInfo{
-			NUMANodeID: numaId,
-			CoreID:     coreId,
-			SocketID:   socketId,
+		cpuTopoInfo[cpuID] = v1alpha1.CPUInfo{
+			NUMANodeID: numaID,
+			CoreID:     coreID,
+			SocketID:   socketID,
 		}
 	}
 
 	return cpuTopoInfo
 }
 
-func getCoreIdScoketIdForcpu(devicePath string, cpuId int) (coreId, socketId int, err error) {
-	topoPath := filepath.Join(devicePath, fmt.Sprintf("cpu/cpu%d", cpuId), "topology")
+func getCoreIDScoketIDForcpu(devicePath string, cpuID int) (coreID, socketID int, err error) {
+	topoPath := filepath.Join(devicePath, fmt.Sprintf("cpu/cpu%d", cpuID), "topology")
 	corePath := filepath.Join(topoPath, "core_id")
 	data, err := ioutil.ReadFile(corePath)
 	if err != nil {
-		return 0, 0, fmt.Errorf("cpu %d read core_id file failed", cpuId)
+		return 0, 0, fmt.Errorf("cpu %d read core_id file failed", cpuID)
 	}
 
 	tmpData, apiErr := util.Parse(string(data))
 	if apiErr != nil {
-		return 0, 0, fmt.Errorf("cpu %d core_id parse failed", cpuId)
+		return 0, 0, fmt.Errorf("cpu %d core_id parse failed", cpuID)
 	}
 
-	coreId = tmpData[0]
+	coreID = tmpData[0]
 
 	socketPath := filepath.Join(topoPath, "physical_package_id")
 	data, err = ioutil.ReadFile(socketPath)
 	if err != nil {
-		return 0, 0, fmt.Errorf("cpu %d read scoket_id file failed", cpuId)
+		return 0, 0, fmt.Errorf("cpu %d read scoket_id file failed", cpuID)
 	}
 
 	tmpData, apiErr = util.Parse(string(data))
 	if apiErr != nil {
-		return 0, 0, fmt.Errorf("cpu %d scoket_id parse failed", cpuId)
+		return 0, 0, fmt.Errorf("cpu %d scoket_id parse failed", cpuID)
 	}
 
-	socketId = tmpData[0]
+	socketID = tmpData[0]
 
-	return coreId, socketId, nil
+	return coreID, socketID, nil
 }
 
-func (info *CpuNumaInfo) GetResourceInfoMap() v1alpha1.ResourceInfo {
+// GetResourceInfoMap return the cpu topology info
+func (info *CPUNumaInfo) GetResourceInfoMap() v1alpha1.ResourceInfo {
 	sets := cpuset.NewCPUSet()
 	var cap = 0
 
@@ -206,8 +212,8 @@ func (info *CpuNumaInfo) GetResourceInfoMap() v1alpha1.ResourceInfo {
 		sets = sets.Union(tmp)
 	}
 
-	for numaId := range info.NUMA2CpuCap {
-		cap += info.NUMA2CpuCap[numaId]
+	for numaID := range info.NUMA2CpuCap {
+		cap += info.NUMA2CpuCap[numaID]
 	}
 
 	return v1alpha1.ResourceInfo{
@@ -216,12 +222,13 @@ func (info *CpuNumaInfo) GetResourceInfoMap() v1alpha1.ResourceInfo {
 	}
 }
 
-func (info *CpuNumaInfo) GetCpuDetail() map[string]v1alpha1.CPUInfo {
-	allCpuTopoInfo := make(map[string]v1alpha1.CPUInfo)
+// GetCPUDetail returns the cpu capability topology info
+func (info *CPUNumaInfo) GetCPUDetail() map[string]v1alpha1.CPUInfo {
+	allCPUTopoInfo := make(map[string]v1alpha1.CPUInfo)
 
-	for cpuId, cpuInfo := range info.cpuDetail {
-		allCpuTopoInfo[strconv.Itoa(cpuId)] = cpuInfo
+	for cpuID, cpuInfo := range info.cpuDetail {
+		allCPUTopoInfo[strconv.Itoa(cpuID)] = cpuInfo
 	}
 
-	return allCpuTopoInfo
+	return allCPUTopoInfo
 }

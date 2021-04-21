@@ -45,22 +45,22 @@ func getNumaTopoClient(argument *args.Argument) (*versioned.Clientset, error) {
 	return versioned.NewForConfigOrDie(config), err
 }
 
-func numatopoIsExist(client *versioned.Clientset) (error, bool) {
+func numatopoIsExist(client *versioned.Clientset) (bool, error) {
 	hostname := os.Getenv("MY_NODE_NAME")
 	if hostname == "" {
-		return fmt.Errorf("get Hostname failed."), false
+		return false, fmt.Errorf("get Hostname failed")
 	}
 
 	_, err := client.NodeinfoV1alpha1().Numatopos("default").Get(context.TODO(), hostname, metav1.GetOptions{})
 	if err != nil {
 		if !apierrors.IsNotFound(err) {
-			return err, false
+			return false, err
 		}
 
-		return nil, false
+		return false, nil
 	}
 
-	return nil, true
+	return true, nil
 }
 
 func main() {
@@ -80,7 +80,7 @@ func main() {
 	}
 
 	for {
-		err, exist := numatopoIsExist(nodeInfoClient)
+		exist, err := numatopoIsExist(nodeInfoClient)
 		if err != nil {
 			klog.Errorf("Get numatopo failed, err= %v", err)
 			time.Sleep(opt.CheckInterval)

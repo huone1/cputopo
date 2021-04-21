@@ -23,10 +23,13 @@ import (
 
 var numaMap = map[string]NumaInfo{}
 
+// RegisterNumaType is the funtion to register the info provider
 func RegisterNumaType(info NumaInfo) {
 	numaMap[info.Name()] = info
 }
 
+// TopoInfoUpdate get the latest node topology information
+// if info is changed , return true
 func TopoInfoUpdate(opt *args.Argument) bool {
 	isChg := false
 
@@ -43,7 +46,8 @@ func TopoInfoUpdate(opt *args.Argument) bool {
 	return isChg
 }
 
-func GetAllResTopoInfo() map[string]v1alpha1.ResourceInfo {
+// GetAllResAllocatableInfo returns the latest info abaut the allocatable nums of all resource
+func GetAllResAllocatableInfo() map[string]v1alpha1.ResourceInfo {
 	numaResMap := make(map[string]v1alpha1.ResourceInfo)
 
 	for str, info := range numaMap {
@@ -53,9 +57,10 @@ func GetAllResTopoInfo() map[string]v1alpha1.ResourceInfo {
 	return numaResMap
 }
 
+// GetCpusDetail returns the cpu capability topology info
 func GetCpusDetail() map[string]v1alpha1.CPUInfo {
 	for _, info := range numaMap {
-		cpuDetail := info.GetCpuDetail()
+		cpuDetail := info.GetCPUDetail()
 		if cpuDetail == nil {
 			continue
 		}
@@ -67,5 +72,5 @@ func GetCpusDetail() map[string]v1alpha1.CPUInfo {
 }
 
 func init() {
-	RegisterNumaType(NewCpuNumaInfo())
+	RegisterNumaType(NewCPUNumaInfo())
 }

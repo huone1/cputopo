@@ -39,14 +39,17 @@ var config = &kubeletConfig{
 	resReserved: make(map[string]string),
 }
 
+// GetPolicy return the topology manager policy on kubelet
 func GetPolicy() map[v1alpha1.PolicyName]string {
 	return config.topoPolicy
 }
 
+// GetResReserved return the reserved info about all resource
 func GetResReserved() map[string]string {
 	return config.resReserved
 }
 
+// GetKubeletConfigFromLocalFile get kubelet configuration from kubelet config file
 func GetKubeletConfigFromLocalFile(kubeletConfigPath string) (*kubeletconfigv1beta1.KubeletConfiguration, error) {
 	kubeletBytes, err := ioutil.ReadFile(kubeletConfigPath)
 	if err != nil {
@@ -60,6 +63,7 @@ func GetKubeletConfigFromLocalFile(kubeletConfigPath string) (*kubeletconfigv1be
 	return kubeletConfig, nil
 }
 
+// GetkubeletConfig get kubelet configuration from kubelet config file
 func GetkubeletConfig(confPath string, resReserved map[string]string) bool {
 	klConfig, err := GetKubeletConfigFromLocalFile(confPath)
 	if err != nil {

@@ -21,9 +21,10 @@ import (
 	"github.com/huone1/cputopo/pkg/args"
 )
 
+// NumaInfo is the interface of resource topolgy data
 type NumaInfo interface {
 	Name() string
 	Update(opt *args.Argument) NumaInfo
 	GetResourceInfoMap() v1alpha1.ResourceInfo
-	GetCpuDetail() map[string]v1alpha1.CPUInfo
+	GetCPUDetail() map[string]v1alpha1.CPUInfo
 }

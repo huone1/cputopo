@@ -21,7 +21,7 @@ import (
 	"strings"
 )
 
-// parse string, such as "1,2-7,9,10-13,14"
+// Parse string, such as "1,2-7,9,10-13,14"
 func Parse(s string) ([]int, error) {
 
 	var result []int

@@ -29,6 +29,7 @@ import (
 	"k8s.io/klog"
 )
 
+// NodeInfoRefresh check the data changes
 func NodeInfoRefresh(opt *args.Argument) bool {
 	isChange := false
 
@@ -43,6 +44,7 @@ func NodeInfoRefresh(opt *args.Argument) bool {
 	return isChange
 }
 
+// CreateOrUpdateNumatopo create or update the numatopo to etcd
 func CreateOrUpdateNumatopo(client *versioned.Clientset) {
 	hostname := os.Getenv("MY_NODE_NAME")
 	if hostname == "" {
@@ -64,7 +66,7 @@ func CreateOrUpdateNumatopo(client *versioned.Clientset) {
 			Spec: v1alpha1.NumatopoSpec{
 				Policies:    GetPolicy(),
 				ResReserved: GetResReserved(),
-				NumaResMap:  GetAllResTopoInfo(),
+				NumaResMap:  GetAllResAllocatableInfo(),
 				CpuDetail:   GetCpusDetail(),
 			},
 		}
@@ -77,7 +79,7 @@ func CreateOrUpdateNumatopo(client *versioned.Clientset) {
 		numaInfo.Spec = v1alpha1.NumatopoSpec{
 			Policies:    GetPolicy(),
 			ResReserved: GetResReserved(),
-			NumaResMap:  GetAllResTopoInfo(),
+			NumaResMap:  GetAllResAllocatableInfo(),
 			CpuDetail:   GetCpusDetail(),
 		}
 		_, err = client.NodeinfoV1alpha1().Numatopos("default").Update(context.TODO(), numaInfo, metav1.UpdateOptions{})
