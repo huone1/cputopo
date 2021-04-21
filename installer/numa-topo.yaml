@@ -72,7 +72,6 @@ spec:
   - name: v1alpha1
     served: true
     storage: true
-
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -100,7 +99,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: numares-account
-    namespace: default
+    namespace: kube-system
 roleRef:
   kind: ClusterRole
   name: numares-role
@@ -111,14 +110,14 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: numares-account
-  namespace: default
+  namespace: kube-system
 
 ---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: numares-daemonset
-  namespace: default
+  namespace: kube-system
 spec:
   selector:
     matchLabels:
