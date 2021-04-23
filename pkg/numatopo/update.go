@@ -20,7 +20,7 @@ import (
 	"context"
 	"os"
 
-	"github.com/huone1/cputopo/pkg/args"
+	"volcano/cputopo/pkg/args"
 	"volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 	"volcano.sh/apis/pkg/client/clientset/versioned"
 

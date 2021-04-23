@@ -1,4 +1,4 @@
-module github.com/huone1/cputopo
+module volcano/cputopo
 
 go 1.15
 

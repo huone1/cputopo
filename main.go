@@ -22,8 +22,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/huone1/cputopo/pkg/args"
-	"github.com/huone1/cputopo/pkg/numatopo"
+	"volcano/cputopo/pkg/args"
+	"volcano/cputopo/pkg/numatopo"
 	"github.com/spf13/pflag"
 	"volcano.sh/apis/pkg/client/clientset/versioned"
 

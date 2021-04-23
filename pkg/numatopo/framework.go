@@ -17,7 +17,7 @@ limitations under the License.
 package numatopo
 
 import (
-	"github.com/huone1/cputopo/pkg/args"
+	"volcano/cputopo/pkg/args"
 	"volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 )
 

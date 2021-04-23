@@ -23,8 +23,8 @@ import (
 	"reflect"
 	"strconv"
 
-	"github.com/huone1/cputopo/pkg/args"
-	"github.com/huone1/cputopo/pkg/util"
+	"volcano/cputopo/pkg/args"
+	"volcano/cputopo/pkg/util"
 	"volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 
 	"k8s.io/klog"
