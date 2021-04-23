@@ -18,15 +18,15 @@ package numatopo
 
 import (
 	"io/ioutil"
-	v1 "k8s.io/api/core/v1"
 	"reflect"
-
-	"volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 
 	"sigs.k8s.io/yaml"
 
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/klog"
 	kubeletconfigv1beta1 "k8s.io/kubelet/config/v1beta1"
+
+	"volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 )
 
 type kubeletConfig struct {

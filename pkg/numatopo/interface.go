@@ -17,8 +17,9 @@ limitations under the License.
 package numatopo
 
 import (
-	"volcano/cputopo/pkg/args"
 	"volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
+
+	"volcano/cputopo/pkg/args"
 )
 
 // NumaInfo is the interface of resource topolgy data

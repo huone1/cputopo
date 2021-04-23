@@ -1,12 +1,13 @@
 package args
 
 import (
-	cliflag "k8s.io/component-base/cli/flag"
 	"time"
 
 	"github.com/spf13/pflag"
+
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
+	cliflag "k8s.io/component-base/cli/flag"
 )
 
 const (

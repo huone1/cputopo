@@ -23,13 +23,14 @@ import (
 	"reflect"
 	"strconv"
 
-	"volcano/cputopo/pkg/args"
-	"volcano/cputopo/pkg/util"
-	"volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
-
 	"k8s.io/klog"
 	cpustate "k8s.io/kubernetes/pkg/kubelet/cm/cpumanager/state"
 	"k8s.io/kubernetes/pkg/kubelet/cm/cpuset"
+
+	"volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
+
+	"volcano/cputopo/pkg/args"
+	"volcano/cputopo/pkg/util"
 )
 
 // CPUNumaInfo is the obkect to maintain the cpu information

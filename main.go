@@ -22,16 +22,18 @@ import (
 	"os"
 	"time"
 
-	"volcano/cputopo/pkg/args"
-	"volcano/cputopo/pkg/numatopo"
 	"github.com/spf13/pflag"
-	"volcano.sh/apis/pkg/client/clientset/versioned"
 
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
 	cliflag "k8s.io/component-base/cli/flag"
 	"k8s.io/klog"
+
+	"volcano.sh/apis/pkg/client/clientset/versioned"
+
+	"volcano/cputopo/pkg/args"
+	"volcano/cputopo/pkg/numatopo"
 )
 
 var logFlushFreq = pflag.Duration("log-flush-frequency", 5*time.Second, "Maximum number of seconds between log flushes")
