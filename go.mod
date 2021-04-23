@@ -3,35 +3,30 @@ module github.com/huone1/cputopo
 go 1.15
 
 require (
-	github.com/evanphx/json-patch v4.9.0+incompatible // indirect
-	github.com/go-logr/logr v0.3.0 // indirect
+	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/golang/protobuf v1.4.3 // indirect
 	github.com/googleapis/gnostic v0.4.0 // indirect
-	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/imdario/mergo v0.3.10 // indirect
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/kr/pretty v0.2.0 // indirect
-	github.com/onsi/ginkgo v1.14.1 // indirect
-	github.com/onsi/gomega v1.10.2 // indirect
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.5.1 // indirect
+	golang.org/x/net v0.0.0-20200520004742-59133d7f0dd7 // indirect
 	golang.org/x/sys v0.0.0-20200615200032-f1bc736245b1 // indirect
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect
-	golang.org/x/tools v0.0.0-20191108193012-7d206e10da11 // indirect
 	google.golang.org/appengine v1.6.6 // indirect
 	google.golang.org/protobuf v1.24.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
-	k8s.io/api v0.20.2
-	k8s.io/apimachinery v0.20.4
-	k8s.io/client-go v0.20.4
-	k8s.io/code-generator v0.18.3
-	k8s.io/component-base v0.20.2
+	k8s.io/api v0.18.3
+	k8s.io/apimachinery v0.18.3
+	k8s.io/client-go v0.18.3
+	k8s.io/component-base v0.18.3
 	k8s.io/klog v1.0.0
 	k8s.io/kubelet v0.18.3
 	k8s.io/kubernetes v1.18.3
 	k8s.io/utils v0.0.0-20210111153108-fddb29f9d009 // indirect
-	sigs.k8s.io/controller-runtime v0.2.0-alpha.0
 	sigs.k8s.io/yaml v1.2.0
+	volcano.sh/apis v1.2.0-k8s1.18.3-alpha.4
 )
 
 replace (
@@ -57,7 +52,7 @@ replace (
 	k8s.io/kubelet => k8s.io/kubelet v0.18.3
 	k8s.io/legacy-cloud-providers => k8s.io/legacy-cloud-providers v0.18.3
 	k8s.io/metrics => k8s.io/metrics v0.18.3
-	k8s.io/mount-utils => k8s.io/mount-utils v0.20.0
+	k8s.io/mount-utils => k8s.io/mount-utils v0.18.3
 	k8s.io/node-api => k8s.io/node-api v0.18.3
 	k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.18.3
 	k8s.io/sample-cli-plugin => k8s.io/sample-cli-plugin v0.18.3

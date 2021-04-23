@@ -23,9 +23,9 @@ import (
 	"reflect"
 	"strconv"
 
-	"github.com/huone1/cputopo/pkg/apis/nodeinfo/v1alpha1"
 	"github.com/huone1/cputopo/pkg/args"
 	"github.com/huone1/cputopo/pkg/util"
+	"volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 
 	"k8s.io/klog"
 	cpustate "k8s.io/kubernetes/pkg/kubelet/cm/cpumanager/state"

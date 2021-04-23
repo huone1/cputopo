@@ -21,7 +21,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 	"reflect"
 
-	"github.com/huone1/cputopo/pkg/apis/nodeinfo/v1alpha1"
+	"volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 
 	"sigs.k8s.io/yaml"
 

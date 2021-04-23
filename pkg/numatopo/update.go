@@ -20,9 +20,9 @@ import (
 	"context"
 	"os"
 
-	"github.com/huone1/cputopo/pkg/apis/nodeinfo/v1alpha1"
 	"github.com/huone1/cputopo/pkg/args"
-	"github.com/huone1/cputopo/pkg/client/clientset/versioned"
+	"volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
+	"volcano.sh/apis/pkg/client/clientset/versioned"
 
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -67,7 +67,7 @@ func CreateOrUpdateNumatopo(client *versioned.Clientset) {
 				Policies:    GetPolicy(),
 				ResReserved: GetResReserved(),
 				NumaResMap:  GetAllResAllocatableInfo(),
-				CpuDetail:   GetCpusDetail(),
+				CPUDetail:   GetCpusDetail(),
 			},
 		}
 
@@ -80,7 +80,7 @@ func CreateOrUpdateNumatopo(client *versioned.Clientset) {
 			Policies:    GetPolicy(),
 			ResReserved: GetResReserved(),
 			NumaResMap:  GetAllResAllocatableInfo(),
-			CpuDetail:   GetCpusDetail(),
+			CPUDetail:   GetCpusDetail(),
 		}
 		_, err = client.NodeinfoV1alpha1().Numatopos("default").Update(context.TODO(), numaInfo, metav1.UpdateOptions{})
 		if err != nil {

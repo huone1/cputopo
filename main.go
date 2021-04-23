@@ -23,9 +23,9 @@ import (
 	"time"
 
 	"github.com/huone1/cputopo/pkg/args"
-	"github.com/huone1/cputopo/pkg/client/clientset/versioned"
 	"github.com/huone1/cputopo/pkg/numatopo"
 	"github.com/spf13/pflag"
+	"volcano.sh/apis/pkg/client/clientset/versioned"
 
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
