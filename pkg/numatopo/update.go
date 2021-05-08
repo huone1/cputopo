@@ -53,14 +53,14 @@ func CreateOrUpdateNumatopo(client *versioned.Clientset) {
 		return
 	}
 
-	numaInfo, err := client.NodeinfoV1alpha1().Numatopos("default").Get(context.TODO(), hostname, metav1.GetOptions{})
+	numaInfo, err := client.NodeinfoV1alpha1().Numatopologies("default").Get(context.TODO(), hostname, metav1.GetOptions{})
 	if err != nil {
 		if !apierrors.IsNotFound(err) {
 			klog.Errorf("Get Numatopo for node %s failed, err=%v", hostname, err)
 			return
 		}
 
-		numaInfo = &v1alpha1.Numatopo{
+		numaInfo = &v1alpha1.Numatopology{
 			ObjectMeta: metav1.ObjectMeta{
 				Name: hostname,
 			},
@@ -72,7 +72,7 @@ func CreateOrUpdateNumatopo(client *versioned.Clientset) {
 			},
 		}
 
-		_, err = client.NodeinfoV1alpha1().Numatopos("default").Create(context.TODO(), numaInfo, metav1.CreateOptions{})
+		_, err = client.NodeinfoV1alpha1().Numatopologies("default").Create(context.TODO(), numaInfo, metav1.CreateOptions{})
 		if err != nil {
 			klog.Errorf("Create Numatopo for node %s failed, err=%v", hostname, err)
 		}
@@ -83,7 +83,7 @@ func CreateOrUpdateNumatopo(client *versioned.Clientset) {
 			NumaResMap:  GetAllResAllocatableInfo(),
 			CPUDetail:   GetCpusDetail(),
 		}
-		_, err = client.NodeinfoV1alpha1().Numatopos("default").Update(context.TODO(), numaInfo, metav1.UpdateOptions{})
+		_, err = client.NodeinfoV1alpha1().Numatopologies("default").Update(context.TODO(), numaInfo, metav1.UpdateOptions{})
 		if err != nil {
 			klog.Errorf("Update Numatopo for node %s failed, err=%v", hostname, err)
 		}

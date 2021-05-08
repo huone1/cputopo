@@ -14,7 +14,7 @@ rules:
     resources: ["persistentvolumes"]
     verbs: ["list", "watch"]
   - apiGroups: ["nodeinfo.volcano.sh"]
-    resources: ["numatopos"]
+    resources: ["numatopologies"]
     verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
 
 ---

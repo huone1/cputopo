@@ -53,7 +53,7 @@ func numatopoIsExist(client *versioned.Clientset) (bool, error) {
 		return false, fmt.Errorf("get Hostname failed")
 	}
 
-	_, err := client.NodeinfoV1alpha1().Numatopos("default").Get(context.TODO(), hostname, metav1.GetOptions{})
+	_, err := client.NodeinfoV1alpha1().Numatopologies("default").Get(context.TODO(), hostname, metav1.GetOptions{})
 	if err != nil {
 		if !apierrors.IsNotFound(err) {
 			return false, err
